@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TextInput, Button} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  Button,
+  FlatList,
+} from 'react-native';
 
 function App() {
   const [enteredGoal, setEnteredGoal] = useState('');
@@ -10,7 +17,10 @@ function App() {
   };
 
   const addGoalHandler = () => {
-    setCourseGoals((currentGoals) => [...currentGoals, enteredGoal]);
+    setCourseGoals((currentGoals) => [
+      ...currentGoals,
+      {key: Math.random().toString(), value: enteredGoal},
+    ]);
   };
 
   return (
@@ -24,11 +34,14 @@ function App() {
         />
         <Button title="Add" onPress={addGoalHandler} />
       </View>
-      <View>
-        {courseGoals.map((goal) => (
-          <Text key={goal}>{goal}</Text>
-        ))}
-      </View>
+      <FlatList
+        data={courseGoals}
+        renderItem={(itemData) => (
+          <View style={styles.liststyle}>
+            <Text style={styles.ListText}>{itemData.item.value}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 }
@@ -46,6 +59,17 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     width: '75%',
+  },
+  liststyle: {
+    borderColor: 'black',
+    backgroundColor: '#dee3e0',
+    padding: 10,
+    margin: 2,
+    borderWidth: 1,
+  },
+  ListText: {
+    fontSize: 20,
+    justifyContent: 'center',
   },
 });
 export default App;
