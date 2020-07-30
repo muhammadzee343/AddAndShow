@@ -16,8 +16,14 @@ function App() {
   const addGoalHandler = (goalTitle) => {
     setCourseGoals((currentGoals) => [
       ...currentGoals,
-      {key: Math.random().toString(), value: goalTitle},
+      {id: Math.random().toString(), value: goalTitle},
     ]);
+  };
+
+  const removeGoalHandle = (goalId) => {
+    setCourseGoals((courseGoals) => {
+      return courseGoals.filter((goal) => goal.id !== goalId);
+    });
   };
 
   return (
@@ -25,26 +31,19 @@ function App() {
       <GoalInput onAddGoal={addGoalHandler} />
       <FlatList
         data={courseGoals}
-        renderItem={(itemData) => <GoalItem title={itemData.item.value} />}
+        renderItem={(itemData) => (
+          <GoalItem
+            id={itemData.item.id}
+            onDeleteHandle={removeGoalHandle}
+            title={itemData.item.value}
+          />
+        )}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    marginTop: 20,
-    flexDirection: 'row',
-    padding: 10,
-    justifyContent: 'space-around',
-    alignContent: 'center',
-    alignItems: 'center',
-  },
-  Input: {
-    borderColor: 'black',
-    borderWidth: 1,
-    width: '75%',
-  },
   liststyle: {
     borderColor: 'black',
     backgroundColor: '#dee3e0',
